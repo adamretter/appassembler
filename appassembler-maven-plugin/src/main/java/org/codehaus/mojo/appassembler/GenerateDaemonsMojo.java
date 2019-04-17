@@ -25,10 +25,7 @@ package org.codehaus.mojo.appassembler;
  */
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -39,6 +36,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.daemon.script.Platform;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -149,6 +147,9 @@ public class GenerateDaemonsMojo
             throw new MojoExecutionException( "The useWildcardClassPath works only in"
                 + " combination with repositoryLayout flat." );
         }
+
+        // Set the extensions for bin files for the different platforms
+        setBinFileExtensions();
 
         if ( preClean )
         {
